@@ -2,7 +2,7 @@
 const router = require('express').Router()
 const Products = require('./products-model.js')
 
-/////sending data from this endpoint/////
+/////get all products/////
 router.get('/', (req, res) => {
   Products.findProducts()
     .then(products => res.status(200).json(products))
@@ -11,6 +11,18 @@ router.get('/', (req, res) => {
     )
 })
 
+/////get product by id/////
+router.get('/:id', (req, res) => {
+  Products.findProductById(req.params.id)
+    .then(item => {
+      res.status(200).json(item)
+    })
+    .catch(({ name, message, stack }) =>
+    res.status(500).json({ name: name, message: message, stack: stack })
+  )
+})
+
+/////add product/////
 router.post('/', (req, res) => {
   let product = req.body
   Products.addProduct(product)
